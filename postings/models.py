@@ -1,5 +1,9 @@
 from django.db import models
 from django.conf import settings
+from django.urls import reverse
+from rest_framework.reverse import reverse as api_reverse
+#django hosts === used to get actual sub domain names instead of restframe work
+
 class BlogPost(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     title = models.CharField(max_length=120, null=True, blank=True)
@@ -9,7 +13,16 @@ class BlogPost(models.Model):
     def __str__(self):
         return str(self.user.username)
 
-    # @property
-    # def owner(self):
-    #     return self.user
+    @property
+    def owner(self):
+      return self.user
+
+    # this gives a relative url i.e api/postings/1
+    # def get_absolute_url(self):
+    #  return api_reverse("api-postings:post-rud", kwargs={'pk':self.pk}) #namespace:url_name, url_kwargs
+
+
+
+    def get_api_url(self):
+            return api_reverse("api-postings:post-rud", kwargs={'pk':self.pk}) #namespace:url_name, url_kwargs
 
