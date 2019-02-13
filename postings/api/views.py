@@ -31,6 +31,8 @@ class BlogPostAPIView(mixins.CreateModelMixin,generics.ListAPIView): #DetailView
     # def patch(self,request,*args,**kwargs):
     #     return self.update(request, *args,**kwargs)
 
+    def get_serializer_context(self, *args, **kwargs):
+        return {"request":self.request}
 
 
 class BlogPostRudView(generics.RetrieveUpdateDestroyAPIView): #DetailView CreateView FormView --> generics
@@ -40,6 +42,11 @@ class BlogPostRudView(generics.RetrieveUpdateDestroyAPIView): #DetailView Create
 
     def get_queryset(self):
         return BlogPost.objects.all()
+
+    #sending url/request to serializer
+    def get_serializer_context(self, *args, **kwargs):
+        return {"request":self.request}
+
 #Since its a retrieve view you can also override the lookup field method
     # def get_object(self):
     #     pk = self.kwargs.get("pk")
